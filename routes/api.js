@@ -11,10 +11,9 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect(process.env.DB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(process.env.DB)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Book Schema
 const bookSchema = new mongoose.Schema({
