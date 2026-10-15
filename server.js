@@ -37,6 +37,20 @@ app.use(function(req, res, next) {
     .send('Not Found');
 });
 
+// Error handling middleware
+app.use(function(err, req, res, next) {
+  console.error('Server error:', err);
+  res.status(500).type('text').send('Internal Server Error');
+});
+
+// Prevent Node process from crashing on unhandled errors
+process.on('uncaughtException', function (err) {
+  console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', function (reason, promise) {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 //Start our server and tests!
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
@@ -49,8 +63,9 @@ const listener = app.listen(process.env.PORT || 3000, function () {
           console.log('Tests are not valid:');
           console.error(e);
       }
-    }, 1500);
+    }, 2500);
   }
 });
 
 module.exports = app; //for unit/functional testing
+
